@@ -1,3 +1,5 @@
 # JSON Tools
 
-A collection of simple yet handy scripts to work with JSON files and objects.
+A collection of simple yet handy scripts to work with JSON files and objects:
+
+* Sort a JSON object by field value;
