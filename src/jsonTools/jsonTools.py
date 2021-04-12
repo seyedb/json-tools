@@ -2,6 +2,18 @@ import json
 from collections import OrderedDict
 import deepdiff
 
+def _jsonToDict(json_file):
+    """Reads in a JSON file and converts it into a dictionary.
+    Args:
+        json_file (str): path to the input file.
+    Returns:
+        (dict) a dictionary containing the data from the input JSON file.
+    """
+    with open(json_file, 'r') as fid:
+        dout = json.loads(fid.read())
+
+    return dout
+
 def sort_json(json_file, field_name, reverse=False):
     """Sorts a JSON object loaded from a file by field value.
 
@@ -12,9 +24,7 @@ def sort_json(json_file, field_name, reverse=False):
     Returns:
         (json obj) the sorted JSON object.
     """
-    with open(json_file, 'r') as fid:
-        dout = json.loads(fid.read())
-
+    dout = _jsonToDict(json_file)
     json_keys = dout.keys()
     sorted_keys = sorted(json_keys, key=lambda k: dout[k][field_name], reverse=reverse)
     res = OrderedDict()
@@ -33,10 +43,6 @@ def compare_json(a_json, b_json, ignore_order=True):
     Returns:
         (dict) a dictionary reporting differences between the two JSON objects.
     """
-    with open(a_json, 'r') as a_fid:
-        a_dict = json.loads(a_fid.read())
-
-    with open(b_json, 'r') as b_fid:
-        b_dict = json.loads(b_fid.read())
-
+    a_dict = _jsonToDict(a_json)
+    b_dict = _jsonToDict(b_json)
     return deepdiff.DeepDiff(a_dict, b_dict, ignore_order=ignore_order)
